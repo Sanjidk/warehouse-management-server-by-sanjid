@@ -37,6 +37,15 @@ async function run() {
       res.send(item);
     });
 
+    // app.get("/myitems", async (req, res) => {
+    //   const email = req.query._id;
+    //   const query = {email: email};
+    //   const cursor = itemsCollection.find(query);
+    //   const item = await cursor.toArray();
+    //   res.send(item);
+    // });
+
+
     //POST method for Add Item
     app.post("/inventory", async (req, res) => {
       const newItem = req.body;
@@ -44,13 +53,31 @@ async function run() {
       res.send(result);
     });
 
+    // Update Quantity
+    app.put('/inventory/:id', async (req, res)=>{
+      const id = req.params.id;
+      const updateQuantity = req.body;
+      console.log(updateQuantity);
+      const filter = { _id: ObjectId(id) };
+      const options ={upsert: true};
+      const updatedDoc = {
+        $set:{
+          quantity: updatedQuantity.quantity
+        }
+      }
+      const result = await itemsCollection.updateOne(filter, updatedDoc, options);
+      res.send(result);
+    });
+
     //DELETE from Manage Item
     app.delete("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await itemsCollection.delete(query);
+      const result = await itemsCollection.deleteOne(query);
       res.send(result);
     });
+
+
   } finally {
   }
 }
