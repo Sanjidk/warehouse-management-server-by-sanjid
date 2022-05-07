@@ -37,14 +37,14 @@ async function run() {
       res.send(item);
     });
 
-    //POST
+    //POST method for Add Item
     app.post("/inventory", async (req, res) => {
       const newItem = req.body;
       const result = await itemsCollection.insertOne(newItem);
       res.send(result);
     });
 
-    //DELETE
+    //DELETE from Manage Item
     app.delete("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
