@@ -56,14 +56,6 @@ async function run() {
       res.send(result);
     });
 
-    // app.get("/myitems", async (req, res) => {
-    //   const email = req.query._id;
-    //   const query = {email: email};
-    //   const cursor = itemsCollection.find(query);
-    //   const item = await cursor.toArray();
-    //   res.send(item);
-    // });
-
     //POST method for Add Item
     app.post("/inventory", async (req, res) => {
       const newItem = req.body;
@@ -78,6 +70,47 @@ async function run() {
       const result = await itemsCollection.deleteOne(query);
       res.send(result);
     });
+
+//addItem
+app.get('/addItem' , verifyJWT , async(req, res) =>{
+  const decodedEmail = req.decoded.email;
+  const email = req.query.email;
+  if (email === decodedEmail) {
+      const query = {email: email};
+  const cursor = orderCollection.find(query);
+  const item = await cursor.toArray();
+  res.send(item); 
+  } else {
+      res.status(403).send({message: 'forbidden access'})
+  }
+ 
+
+})
+app.post('/addItem', async(req, res) => {
+  const newItem = req.body;
+  const result = await orderCollection.insertOne(newItem);
+  res.send(result)
+});
+
+    //myitem
+    app.get('/myitems', async(req, res) => {
+      const email = req.query.email;
+      const query = {email: email};
+      const cursor = itemsCollection.find(query);
+      const myItems = await cursor.toArray() ;
+      res.send(myItems);
+  });
+
+  app.delete('/myitems/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)};
+      const result = await itemsCollection.deleteOne(query);
+      res.send(result);
+  });
+
+
+
+
   } finally {
   }
 }
