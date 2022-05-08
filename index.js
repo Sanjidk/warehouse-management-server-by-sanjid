@@ -41,7 +41,6 @@ async function run() {
     app.put("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const updatedQuantity = req.body;
-      console.log(updatedQuantity);
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updatedDoc = {
