@@ -11,6 +11,11 @@ app.use(cors());
 app.use(express.json());
 
 
+// DB_USER =warehouse1
+// DB_PASS =JHbmndpwl1FUmUPL
+// ACCESS_TOKEN_SECRET =1774b0ee79414143bf5a16c4ba45e3ccd507138f6202c0e3d5ff8553a28c64145718f8836cbc91019bc29ea0de010ae588ec9300a8496432bcb22a2eef3adb03
+
+
 function verifyJWT(req, res, next){
   const authHeader = req.headers.authorization;
   if(!authHeader){
