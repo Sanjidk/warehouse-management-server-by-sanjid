@@ -28,9 +28,6 @@ function verifyJWT(req, res, next){
 }
 
 
-
-
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@warehouse-management.sjnu1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -115,9 +112,9 @@ app.get('/addItem', verifyJWT, async(req, res) =>{
   } else {
       res.status(403).send({message: 'forbidden access'})
   }
- 
-
 })
+
+
 app.post('/addItem', async(req, res) => {
   const newItem = req.body;
   const result = await orderCollection.insertOne(newItem);
@@ -147,10 +144,8 @@ app.post('/addItem', async(req, res) => {
       res.send(result);
   });
 
-
-
-
-  } finally {
+  } 
+  finally {
   }
 }
 run().catch(console.dir);
