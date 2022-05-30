@@ -6,7 +6,6 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middleware
 // const corsConfig = {
 //   origin: true,
 //   credentials: true,
@@ -16,7 +15,6 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-
 
 
 function verifyJWT(req, res, next) {
