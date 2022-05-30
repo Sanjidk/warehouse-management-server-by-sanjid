@@ -4,33 +4,34 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
-const port = process.env.port || 5000;
+const port = process.env.PORT || 5000;
 
 // middleware
-const corsConfig = {
-  origin: true,
-  credentials: true,
-}
-app.use(cors(corsConfig))
-app.options('*', cors(corsConfig))
+// const corsConfig = {
+//   origin: true,
+//   credentials: true,
+// }
+// app.use(cors(corsConfig))
+// app.options('*', cors(corsConfig))
+
+app.use(cors());
 app.use(express.json());
 
 
 
-function verifyJWT(req, res, next){
+function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
-  if(!authHeader){
-    return res.status(401).send({ message: 'unauthorized access'});
+  if (!authHeader) {
+    return res.status(401).send({ message: 'UnAuthorized access' });
   }
   const token = authHeader.split(' ')[1];
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded)=>{
-    if(err){
-      return res.status(403).send({ message: 'Forbidden access'});
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+    if (err) {
+      return res.status(403).send({ message: 'Forbidden access' })
     }
-    console.log('decded', decoded);
-    req.decoded = decoded ;
+    req.decoded = decoded;
     next();
-  })
+  });
 }
 
 
@@ -44,9 +45,8 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const itemsCollection = client
-      .db("warehouse-management")
-      .collection("item");
+    const itemsCollection = client.db("warehouse-management").collection("item");
+    const orderCollection = client.db("warehouse-management").collection("order");
 
 
       //AUTH Login
